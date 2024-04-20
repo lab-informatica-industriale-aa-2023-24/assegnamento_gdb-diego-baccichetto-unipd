@@ -11,24 +11,26 @@
 void estrai_dati(int ac, char **av, int *vett, int *lung)
 {
 	*lung = ac - 1;
-
-	for (int i = 0; i < *lung; ++i)
+	for (int i = 0; i < *lung; ++i){
 		vett[i] = atoi(av[i+1]);
+	}
 }
 
 void fai_spazio(int posizione, int *vett, int lung)
 {
-	for (int j = lung - 1; j > posizione; ++j) 
+	for (int j = lung; j > posizione; --j) 				//errore: decrementare il j, lung e non lung - 1
 		vett[j] = vett[j-1];
 }
 
 void inserisci(int nuovo_dato, int num_dati_ord, int *vett)
 { 
-	if (num_dati_ord = 0)  { // il vettore è vuoto, facile
+	//if che viene eseguito solo al primo inserimento
+	if (num_dati_ord == 0)  { // il vettore è vuoto, facile		//errore: comparatore di uguaglianza si scrive come ==
 		vett[0] = nuovo_dato;
 		return;
 	}
-
+	
+	//ciclo che viene eseguito agli inserimenti successivi
 	for (int i = 0; i < num_dati_ord; ++i)  {
 		if (nuovo_dato < vett[i])  {
 			// sposta da vett[i] in poi di un posto sulla destra
@@ -36,14 +38,14 @@ void inserisci(int nuovo_dato, int num_dati_ord, int *vett)
 			fai_spazio(i, vett, num_dati_ord);
 			vett[i] = nuovo_dato;
 			return;
-		}
+		}	
 	}
+	vett[num_dati_ord] = nuovo_dato;					//errore: salvo se il numero non è minore
 }
 
-void ordina_dati(const int *dati_non_ordinati, int *dati_ordinati)
+void ordina_dati(const int *dati_non_ordinati, int *dati_ordinati, int *num_dati)  //errore: sizeof non restituisce la dimensione, uso il puntatore *num_dati
 {
-	int num_dati = sizeof(dati_non_ordinati) / sizeof(dati_non_ordinati[0]);
-	for (int i = 0; i < num_dati; ++i)
+	for (int i = 0; i < *num_dati; ++i)
 		inserisci(dati_non_ordinati[i], i, dati_ordinati);
 }
 
@@ -65,7 +67,7 @@ int main(int argc, char **argv)
 	int num_dati = 0;
 
 	estrai_dati(argc, argv, dati_input, &num_dati);
-	ordina_dati(dati_input, dati_ordinati);
+	ordina_dati(dati_input, dati_ordinati, &num_dati);		//errore: passo il puntatore &num_dati
 	stampa_vettore(dati_ordinati, num_dati);
 	return 0;
 }
